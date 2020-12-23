@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2020-01-24
+## [0.1.0] - 2020-12-23
 
 Initial public release
 
-[Unreleased]: https://github.com/lukasberbuer/weatherlink-live-local-python/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/lukasberbuer/weatherlink-live-local-python/compare/0.1.0...HEAD
 [0.1.0]: https://github.com/lukasberbuer/weatherlink-live-local-python/releases/tag/0.1.0
