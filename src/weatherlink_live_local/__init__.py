@@ -7,12 +7,10 @@ from datetime import datetime
 from enum import IntEnum
 from typing import Any, Dict, List, NamedTuple, Optional
 
-from . import units
-from .conditions import *
-from .discovery import Discovery, ServiceInfo
+from . import conditions, discovery, units
 
 
-def discover(timeout: int = 1) -> List[ServiceInfo]:
+def discover(timeout: int = 1) -> List[discovery.ServiceInfo]:
     """
     Discover all WeatherLink Live services on local network(s).
 
@@ -22,10 +20,10 @@ def discover(timeout: int = 1) -> List[ServiceInfo]:
     Returns:
         List of found services
     """
-    return Discovery.find(timeout=timeout)
+    return discovery.Discovery.find(timeout=timeout)
 
 
-def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> Conditions:
+def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Conditions:
     """
     Read conditions from WeatherLink Live device + all connected sensors.
 
@@ -55,15 +53,15 @@ def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> Conditions:
                 json_data["conditions"],
             )
 
-        return Conditions(
+        return conditions.Conditions(
             timestamp=datetime.fromtimestamp(json_data["ts"]),
-            inside=InsideConditions.from_dict(next(conditions_by_type(4))),
-            barometric=BarometricConditions.from_dict(next(conditions_by_type(3))),
+            inside=conditions.InsideConditions.from_dict(next(conditions_by_type(4))),
+            barometric=conditions.BarometricConditions.from_dict(next(conditions_by_type(3))),
             moisture_temperature_stations=[
-                MoistureTemperatureConditions.from_dict(c) for c in conditions_by_type(2)
+                conditions.MoistureTemperatureConditions.from_dict(c) for c in conditions_by_type(2)
             ],
             integrated_sensor_suites=[
-                SensorSuiteConditions.from_dict(c) for c in conditions_by_type(1)
+                conditions.SensorSuiteConditions.from_dict(c) for c in conditions_by_type(1)
             ],
         )
 

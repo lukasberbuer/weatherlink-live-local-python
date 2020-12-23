@@ -124,7 +124,7 @@ def test_http_get():
     assert conditions.timestamp == datetime.fromtimestamp(1531754005)
 
     inside = conditions.inside
-    assert isinstance(inside, wlll.InsideConditions)
+    assert isinstance(inside, wlll.conditions.InsideConditions)
     assert inside.lsid == 48307
     assert inside.temp == 78
     assert inside.hum == 41.1
@@ -132,7 +132,7 @@ def test_http_get():
     assert inside.heat_index == 8.4
 
     barometric = conditions.barometric
-    assert isinstance(barometric, wlll.BarometricConditions)
+    assert isinstance(barometric, wlll.conditions.BarometricConditions)
     assert barometric.lsid == 48306
     assert barometric.bar_absolute == 30.008
     assert barometric.bar_sea_level == 30.008
@@ -140,7 +140,7 @@ def test_http_get():
 
     assert len(conditions.moisture_temperature_stations) == 1
     mt0 = conditions.moisture_temperature_stations[0]
-    assert isinstance(mt0, wlll.MoistureTemperatureConditions)
+    assert isinstance(mt0, wlll.conditions.MoistureTemperatureConditions)
     assert mt0.txid == 3
     assert mt0.rx_state == None
     assert mt0.trans_battery_flag == None
@@ -157,10 +157,10 @@ def test_http_get():
 
     assert len(conditions.integrated_sensor_suites) == 1
     iss0 = conditions.integrated_sensor_suites[0]
-    assert isinstance(iss0, wlll.SensorSuiteConditions)
+    assert isinstance(iss0, wlll.conditions.SensorSuiteConditions)
     assert iss0.lsid == 48308
     assert iss0.txid == 1
-    assert iss0.rx_state == wlll.RadioReceptionState.SCANNING
+    assert iss0.rx_state == wlll.conditions.RadioReceptionState.SCANNING
     assert iss0.trans_battery_flag == 0
     assert iss0.temp == 62.7
     assert iss0.hum == 1.1
