@@ -13,7 +13,7 @@ INSTALL_REQUIRES = [
 
 EXTRAS_REQUIRE = {
     "docs": [
-        "sphinx>3.1",
+        "sphinx>=3.1",
         "sphinx-autodoc-typehints",
         "sphinx-rtd-theme",
         "m2r2",  # include markdown files
