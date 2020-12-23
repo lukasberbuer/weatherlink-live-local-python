@@ -8,7 +8,7 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/weatherlink_live_local)](https://pypi.org/project/weatherlink_live_local)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Python library to read weather data from a [Davis® WeatherLink Live station](https://www.davisinstruments.com/weatherlinklive/) + connected sensors (e.g. [Vantage Vue](https://www.davisinstruments.com/vantage-vue/)). Features:
+Python library to read weather data from a [Davis WeatherLink Live station](https://www.davisinstruments.com/weatherlinklive/) + connected sensors (e.g. [Vantage Vue](https://www.davisinstruments.com/vantage-vue/)). Features:
 
 - discover WeatherLink Live stations in the local network
 - read sensor values (called conditions) using the **local** API - no internet connection required

@@ -1,7 +1,7 @@
 WeatherLink Live Local Python API
 =================================
 
-Python library to read weather data from a `Davis® WeatherLink Live station <https://www.davisinstruments.com/weatherlinklive/>`_ + connected sensors (e.g. `Vantage Vue <https://www.davisinstruments.com/vantage-vue/>`_) using the local API.
+Python library to read weather data from a `Davis WeatherLink Live station <https://www.davisinstruments.com/weatherlinklive/>`_ + connected sensors (e.g. `Vantage Vue <https://www.davisinstruments.com/vantage-vue/>`_) using the local API.
 
 API specification: https://weatherlink.github.io/weatherlink-live-local-api/
 
