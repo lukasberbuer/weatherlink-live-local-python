@@ -1,5 +1,13 @@
 # WeatherLink Live Local Python API
 
+[![CI](https://github.com/lukasberbuer/weatherlink-live-local-python/workflows/CI/badge.svg)](https://github.com/lukasberbuer/weatherlink-live-local-python/actions)
+[![Documentation Status](https://readthedocs.org/projects/weatherlink-live-local-python/badge/?version=latest)](https://weatherlink-live-local-python.readthedocs.io/en/latest/?badge=latest)
+[![Coverage Status](https://coveralls.io/repos/github/lukasberbuer/weatherlink-live-local-python/badge.svg?branch=master)](https://coveralls.io/github/lukasberbuer/weatherlink-live-local-python?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI](https://img.shields.io/pypi/v/weatherlink_live_local)](https://pypi.org/project/weatherlink_live_local)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/weatherlink_live_local)](https://pypi.org/project/weatherlink_live_local)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Python library to read weather data from a [Davis® WeatherLink Live station](https://www.davisinstruments.com/weatherlinklive/) + connected sensors (e.g. [Vantage Vue](https://www.davisinstruments.com/vantage-vue/)). Features:
 
 - discover WeatherLink Live stations in the local network
