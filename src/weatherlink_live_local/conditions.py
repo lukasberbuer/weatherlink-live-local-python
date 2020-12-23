@@ -258,5 +258,5 @@ class Conditions:
     timestamp: datetime  #: Timestamp
     inside: InsideConditions  #: Inside conditions of WeatherLink Live station
     barometric: BarometricConditions  #: Barometric conditions of WeatherLink Live station
-    integrated_sensor_suites: List[MoistureTemperatureConditions]  #: Conditions of leaf & soil moisture/temperature station(s)
-    moisture_temperature_stations: List[SensorSuiteConditions]  #: Conditions of integrated sensor suite(s), e.g. Vantage Vue
+    moisture_temperature_stations: List[MoistureTemperatureConditions]  #: Conditions of leaf & soil moisture/temperature station(s)
+    integrated_sensor_suites: List[SensorSuiteConditions]  #: Conditions of integrated sensor suite(s), e.g. Vantage Vue
