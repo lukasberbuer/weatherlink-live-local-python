@@ -35,7 +35,7 @@ EXTRAS_REQUIRE = {
 EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["docs"] + EXTRAS_REQUIRE["tests"] + EXTRAS_REQUIRE["tools"]
 
 setup(
-    name="weatherlink_live_local",
+    name="weatherlink-live-local",
     version="0.1.0",
     description="Read current weather data from Davis® WeatherLink Live units + connected sensors",
     long_description=LONG_DESCRIPTION,

@@ -22,7 +22,7 @@ project = "weatherlink-live-local-python"
 author = "Lukas Berbuer"
 
 # The full version, including alpha/beta/rc tags
-release = pkg_resources.get_distribution("weatherlink_live_local").version
+release = pkg_resources.get_distribution("weatherlink-live-local").version
 
 
 # -- General configuration ---------------------------------------------------

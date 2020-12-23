@@ -28,7 +28,7 @@ API specification: https://weatherlink.github.io/weatherlink-live-local-api/
 ## Install
 
 ```
-pip install weatherlink_live_local
+pip install weatherlink-live-local
 ```
 
 ## Example
