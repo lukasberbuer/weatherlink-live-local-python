@@ -45,8 +45,6 @@ setup(
     author_email="lukas.berbuer@gmail.com",
     classifiers=[
         "Development Status :: 4 - Beta",
-        "Intended Audience :: Science/Research",
-        "Topic :: Scientific/Engineering",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
