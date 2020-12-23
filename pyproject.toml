@@ -92,10 +92,9 @@ commands =
 [testenv:docs]
 extras = docs
 changedir = docs
-whitelist_externals = make
 commands =
-    make linkcheck
-    make dummy
+    sphinx-build -b linkcheck . _build
+    sphinx-build -b dummy . _build
 """
 
 [tool.coverage.run]
