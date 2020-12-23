@@ -40,7 +40,7 @@ setup(
     description="Read current weather data from Davis® WeatherLink Live units + connected sensors",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    url="https://github.com/vallen-systems/pyWaveline",
+    url="https://github.com/lukasberbuer/weatherlink-live-local-python",
     author="Lukas Berbuer",
     author_email="lukas.berbuer@gmail.com",
     classifiers=[
@@ -70,7 +70,7 @@ setup(
     install_requires=INSTALL_REQUIRES,
     extras_require=EXTRAS_REQUIRE,
     project_urls={
-        "Bug Reports": "https://github.com/vallen-systems/pyWaveline/issues",
-        "Source": "https://github.com/vallen-systems/pyWaveline",
+        "Bug Reports": "https://github.com/lukasberbuer/weatherlink-live-local-python/issues",
+        "Source": "https://github.com/lukasberbuer/weatherlink-live-local-python",
     },
 )
