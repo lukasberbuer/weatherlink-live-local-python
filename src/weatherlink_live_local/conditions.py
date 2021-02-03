@@ -120,7 +120,7 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
             **asdict(_SensorIdentifier.from_dict(json_data)),
             **asdict(_WirelessSensorUnit.from_dict(json_data)),
             temp=convert_temperature(json_data["temp"]),
-            hum=convert_temperature(json_data["hum"]),
+            hum=json_data["hum"],
             dew_point=convert_temperature(json_data["dew_point"]),
             wet_bulb=convert_temperature(json_data["wet_bulb"]),
             heat_index=convert_temperature(json_data["heat_index"]),
