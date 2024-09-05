@@ -76,4 +76,4 @@ branch = true
 source = ["weatherlink_live_local"]
 
 [tool.coverage.paths]
-source = ["src", ".tox/*/site-packages"]
+source = ["src", "*/site-packages"]
