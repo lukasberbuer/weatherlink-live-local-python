@@ -8,7 +8,6 @@ with open(HERE / "README.md", encoding="utf-8") as f:
 
 INSTALL_REQUIRES = [
     "zeroconf",
-    "dataclasses>=0.6; python_version<'3.7'",
 ]
 
 EXTRAS_REQUIRE = {
@@ -49,7 +48,6 @@ setup(
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -69,7 +67,7 @@ setup(
     ],
     packages=find_packages("src"),
     package_dir={"": "src"},
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     install_requires=INSTALL_REQUIRES,
     extras_require=EXTRAS_REQUIRE,
     project_urls={

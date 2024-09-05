@@ -1,16 +1,15 @@
 """WeatherLink Live Local Python API."""
 
+from __future__ import annotations
+
 import json
 import urllib.request
-from dataclasses import asdict, dataclass
 from datetime import datetime
-from enum import IntEnum
-from typing import Any, Dict, List, NamedTuple, Optional
 
 from . import conditions, discovery, units
 
 
-def discover(timeout: int = 1) -> List[discovery.ServiceInfo]:
+def discover(timeout: int = 1) -> list[discovery.ServiceInfo]:
     """
     Discover all WeatherLink Live services on local network(s).
 
@@ -67,10 +66,10 @@ def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Cond
 
 
 def set_units(
-    temperature: Optional[units.TemperatureUnit] = None,
-    pressure: Optional[units.PressureUnit] = None,
-    rain: Optional[units.RainUnit] = None,
-    wind_speed: Optional[units.WindSpeedUnit] = None,
+    temperature: units.TemperatureUnit | None = None,
+    pressure: units.PressureUnit | None = None,
+    rain: units.RainUnit | None = None,
+    wind_speed: units.WindSpeedUnit | None = None,
 ):
     """
     Set desired units for `get_conditions` command.

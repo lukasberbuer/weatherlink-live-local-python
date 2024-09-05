@@ -1,9 +1,11 @@
 """Datatypes to gather device-specific sensor data / conditions."""
 
+from __future__ import annotations
+
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from enum import IntEnum
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from .units import convert_pressure, convert_rain, convert_temperature, convert_wind_speed
 
@@ -17,7 +19,7 @@ class _SensorIdentifier:
     lsid: int  # Logical sensor ID
 
     @classmethod
-    def from_dict(cls, json_data: Dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any]):
         return cls(lsid=json_data["lsid"])
 
 
@@ -38,7 +40,7 @@ class _WirelessSensorUnit:
     trans_battery_flag: int  #: Transmitter battery flag
 
     @classmethod
-    def from_dict(cls, json_data: Dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any]):
         return cls(
             txid=json_data["txid"],
             rx_state=(
@@ -98,7 +100,7 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
     uv_index: Optional[float]  #: UV index
 
     @classmethod
-    def from_dict(cls, json_data: Dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any]):
         rain_size_inches = {
             1: 0.01,  # 0.01"
             2: 0.2 / 25.4,  # 0.2 mm
@@ -181,7 +183,7 @@ class MoistureTemperatureConditions(_SensorIdentifier, _WirelessSensorUnit):
     wet_leaf_2: Optional[float]  #: Leaf wetness slot 2
 
     @classmethod
-    def from_dict(cls, json_data: Dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any]):
         assert json_data["data_structure_type"] == 2
         return cls(  # type: ignore
             **asdict(_SensorIdentifier.from_dict(json_data)),
@@ -212,7 +214,7 @@ class BarometricConditions(_SensorIdentifier):
     bar_absolute: Optional[float]  #: Raw bar sensor reading [`PressureUnit`]
 
     @classmethod
-    def from_dict(cls, json_data: Dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any]):
         assert json_data["data_structure_type"] == 3
         return cls(  # type: ignore
             **asdict(_SensorIdentifier.from_dict(json_data)),
@@ -236,7 +238,7 @@ class InsideConditions(_SensorIdentifier):
     heat_index: Optional[float]  #: Heat index [`TemperatureUnit`]
 
     @classmethod
-    def from_dict(cls, json_data: Dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any]):
         assert json_data["data_structure_type"] == 4
         return cls(  # type: ignore
             **asdict(_SensorIdentifier.from_dict(json_data)),
@@ -258,5 +260,5 @@ class Conditions:
     timestamp: datetime  #: Timestamp
     inside: InsideConditions  #: Inside conditions of WeatherLink Live station
     barometric: BarometricConditions  #: Barometric conditions of WeatherLink Live station
-    moisture_temperature_stations: List[MoistureTemperatureConditions]  #: Conditions of leaf & soil moisture/temperature station(s)
-    integrated_sensor_suites: List[SensorSuiteConditions]  #: Conditions of integrated sensor suite(s), e.g. Vantage Vue
+    moisture_temperature_stations: list[MoistureTemperatureConditions]  #: Conditions of leaf & soil moisture/temperature station(s)
+    integrated_sensor_suites: list[SensorSuiteConditions]  #: Conditions of integrated sensor suite(s), e.g. Vantage Vue
