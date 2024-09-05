@@ -9,20 +9,15 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-import os
-import sys
-import pkg_resources
-sys.path.insert(0, os.path.abspath("../"))
+
+from importlib import metadata
 
 
 # -- Project information -----------------------------------------------------
 
 project = "weatherlink-live-local-python"
 author = "Lukas Berbuer"
-
-# The full version, including alpha/beta/rc tags
-release = pkg_resources.get_distribution("weatherlink-live-local").version
+release = metadata.version("weatherlink-live-local")
 
 
 # -- General configuration ---------------------------------------------------
@@ -67,6 +62,7 @@ add_function_parentheses = True
 # a list of builtin themes.
 # html_theme = "alabaster"
 import sphinx_rtd_theme
+
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
