@@ -15,7 +15,15 @@ from weatherlink_live_local.units import (
 )
 
 # fmt: off
-# pylint: disable=line-too-long
+
+class DataStructureType(IntEnum):
+    """Data structure type to differentiate condition types."""
+
+    SENSOR_SUITE = 1
+    MOISTURE_TEMPERATURE = 2
+    BAROMETRIC = 3
+    INSIDE = 4
+
 
 @dataclass
 class _SensorIdentifier:
@@ -61,7 +69,7 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
     """
     Conditions of integrated sensor suite (ISS), e.g. Vantage Vue.
 
-    Data structure for `data_structure_type = 1`
+    Data structure for `data_structure_type = DataStructureType.SENSOR_SUITE`
     """
 
     temp: float | None  #: Temperature [`TemperatureUnit`]
@@ -123,6 +131,7 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
                 return None
             return datetime.fromtimestamp(timestamp, timezone.utc)
 
+        assert json_data["data_structure_type"] == DataStructureType.SENSOR_SUITE
         return cls(
             **asdict(_SensorIdentifier.from_dict(json_data)),
             **asdict(_WirelessSensorUnit.from_dict(json_data)),
@@ -173,7 +182,7 @@ class MoistureTemperatureConditions(_SensorIdentifier, _WirelessSensorUnit):
     """
     Conditions of leaf & soil moisture/temperature station.
 
-    Data structure for `data_structure_type = 2`
+    Data structure for `data_structure_type = DataStructureType.MOISTURE_TEMPERATURE`
     """
 
     temp_1: float | None  #: Temperature slot 1 [`TemperatureUnit`]
@@ -189,7 +198,7 @@ class MoistureTemperatureConditions(_SensorIdentifier, _WirelessSensorUnit):
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
-        assert json_data["data_structure_type"] == 2
+        assert json_data["data_structure_type"] == DataStructureType.MOISTURE_TEMPERATURE
         return cls(
             **asdict(_SensorIdentifier.from_dict(json_data)),
             **asdict(_WirelessSensorUnit.from_dict(json_data)),
@@ -211,7 +220,7 @@ class BarometricConditions(_SensorIdentifier):
     """
     Barometric conditions of WeatherLink Live station.
 
-    Data structure for `data_structure_type = 3`
+    Data structure for `data_structure_type = DataStructureType.BAROMETRIC`
     """
 
     bar_sea_level: float | None  #: Most recent bar sensor reading with elevation adjustment [`PressureUnit`]
@@ -220,7 +229,7 @@ class BarometricConditions(_SensorIdentifier):
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
-        assert json_data["data_structure_type"] == 3
+        assert json_data["data_structure_type"] == DataStructureType.BAROMETRIC
         return cls(
             **asdict(_SensorIdentifier.from_dict(json_data)),
             bar_absolute=convert_pressure(json_data["bar_absolute"]),
@@ -234,7 +243,7 @@ class InsideConditions(_SensorIdentifier):
     """
     Inside conditions of WeatherLink Live station.
 
-    Data structure for `data_structure_type = 4`
+    Data structure for `data_structure_type = DataStructureType.INSIDE`
     """
 
     temp: float | None  #: Inside temperature [`TemperatureUnit`]
@@ -244,7 +253,7 @@ class InsideConditions(_SensorIdentifier):
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
-        assert json_data["data_structure_type"] == 4
+        assert json_data["data_structure_type"] == DataStructureType.INSIDE
         return cls(
             **asdict(_SensorIdentifier.from_dict(json_data)),
             temp=convert_temperature(json_data["temp_in"]),
@@ -259,7 +268,7 @@ class Conditions:
     """
     Gathered conditions of all available sensors.
 
-    Returned by `get_conditions` function.
+    Returned by `parse_response` or `get_conditions` function.
     """
 
     timestamp: datetime  #: Timestamp
@@ -270,7 +279,7 @@ class Conditions:
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
-        def conditions_by_type(data_structure_type: int):
+        def conditions_by_type(data_structure_type: DataStructureType):
             return filter(
                 lambda c: c["data_structure_type"] == data_structure_type,
                 json_data["conditions"],
@@ -278,12 +287,18 @@ class Conditions:
 
         return cls(
             timestamp=datetime.fromtimestamp(json_data["ts"], timezone.utc),
-            inside=InsideConditions.from_dict(next(conditions_by_type(4))),
-            barometric=BarometricConditions.from_dict(next(conditions_by_type(3))),
+            inside=InsideConditions.from_dict(
+                next(conditions_by_type(DataStructureType.INSIDE))
+            ),
+            barometric=BarometricConditions.from_dict(
+                next(conditions_by_type(DataStructureType.BAROMETRIC))
+            ),
             moisture_temperature_stations=[
-                MoistureTemperatureConditions.from_dict(c) for c in conditions_by_type(2)
+                MoistureTemperatureConditions.from_dict(c)
+                for c in conditions_by_type(DataStructureType.MOISTURE_TEMPERATURE)
             ],
             integrated_sensor_suites=[
-                SensorSuiteConditions.from_dict(c) for c in conditions_by_type(1)
+                SensorSuiteConditions.from_dict(c)
+                for c in conditions_by_type(DataStructureType.SENSOR_SUITE)
             ],
         )
