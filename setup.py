@@ -59,13 +59,13 @@ setup(
         "Operating System :: OS Independent",
     ],
     keywords=[
-        "Davis",
-        "WeatherLink",
+        "davis",
+        "weatherlink",
         "local",
-        "API",
+        "api",
         "weather",
-        "IoT",
-        "Smart Home",
+        "iot",
+        "smarthome",
     ],
     packages=find_packages("src"),
     package_dir={"": "src"},
@@ -74,6 +74,7 @@ setup(
     extras_require=EXTRAS_REQUIRE,
     project_urls={
         "Bug Reports": "https://github.com/lukasberbuer/weatherlink-live-local-python/issues",
+        "Changelog": "https://github.com/lukasberbuer/weatherlink-live-local-python/blob/master/CHANGELOG.md",
         "Source": "https://github.com/lukasberbuer/weatherlink-live-local-python",
     },
 )
