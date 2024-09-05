@@ -7,7 +7,12 @@ from datetime import datetime, timezone
 from enum import IntEnum
 from typing import Any
 
-from .units import convert_pressure, convert_rain, convert_temperature, convert_wind_speed
+from weatherlink_live_local.units import (
+    convert_pressure,
+    convert_rain,
+    convert_temperature,
+    convert_wind_speed,
+)
 
 # fmt: off
 # pylint: disable=line-too-long

@@ -6,7 +6,7 @@ import json
 import urllib.request
 from datetime import datetime, timezone
 
-from . import conditions, discovery, units
+from weatherlink_live_local import conditions, discovery, units
 
 
 def discover(timeout: int = 1) -> list[discovery.ServiceInfo]:
@@ -35,11 +35,8 @@ def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Cond
     Returns:
         Conditions of all available sensors
     """
-
-    with urllib.request.urlopen(
-        f"http://{ip}:{port}/v1/current_conditions",
-        timeout=timeout,
-    ) as resp:
+    url = f"http://{ip}:{port}/v1/current_conditions"
+    with urllib.request.urlopen(url, timeout=timeout) as resp:  # noqa: S310
         if resp.status != 200:
             raise RuntimeError(f"HTTP response code {resp.status}")
 
