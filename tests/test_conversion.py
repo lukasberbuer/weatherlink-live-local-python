@@ -1,6 +1,15 @@
 import pytest
 
-import weatherlink_live_local as wlll
+from weatherlink_live_local.units import (
+    PressureUnit,
+    RainUnit,
+    TemperatureUnit,
+    WindSpeedUnit,
+    convert_pressure,
+    convert_rain,
+    convert_temperature,
+    convert_wind_speed,
+)
 
 RTOL = 0.001
 
@@ -13,10 +22,8 @@ RTOL = 0.001
     ],
 )
 def test_convert_temperature(raw, fahrenheit, celsius):
-    wlll.set_units(temperature=wlll.units.TemperatureUnit.FAHRENHEIT)
-    assert wlll.units.convert_temperature(raw) == fahrenheit
-    wlll.set_units(temperature=wlll.units.TemperatureUnit.CELSIUS)
-    assert wlll.units.convert_temperature(raw) == pytest.approx(celsius, rel=RTOL)
+    assert convert_temperature(raw, TemperatureUnit.FAHRENHEIT) == fahrenheit
+    assert convert_temperature(raw, TemperatureUnit.CELSIUS) == pytest.approx(celsius, rel=RTOL)
 
 
 @pytest.mark.parametrize(
@@ -27,10 +34,20 @@ def test_convert_temperature(raw, fahrenheit, celsius):
     ],
 )
 def test_convert_pressure(raw, inhg, hpa):
-    wlll.set_units(pressure=wlll.units.PressureUnit.INCH_MERCURY)
-    assert wlll.units.convert_pressure(raw) == inhg
-    wlll.set_units(pressure=wlll.units.PressureUnit.HECTOPASCAL)
-    assert wlll.units.convert_pressure(raw) == pytest.approx(hpa, rel=RTOL)
+    assert convert_pressure(raw, PressureUnit.INCH_MERCURY) == inhg
+    assert convert_pressure(raw, PressureUnit.HECTOPASCAL) == pytest.approx(hpa, rel=RTOL)
+
+
+@pytest.mark.parametrize(
+    ("raw", "inch", "mm"),
+    [
+        (0, 0, 0),
+        (1, 1, 25.4),
+    ],
+)
+def test_convert_rain(raw, inch, mm):
+    assert convert_rain(raw, RainUnit.INCH) == inch
+    assert convert_rain(raw, RainUnit.MILLIMETER) == pytest.approx(mm, rel=RTOL)
 
 
 @pytest.mark.parametrize(
@@ -41,7 +58,5 @@ def test_convert_pressure(raw, inhg, hpa):
     ],
 )
 def test_convert_wind_speed(raw, mph, ms):
-    wlll.set_units(wind_speed=wlll.units.WindSpeedUnit.MILES_PER_HOUR)
-    assert wlll.units.convert_wind_speed(raw) == mph
-    wlll.set_units(wind_speed=wlll.units.WindSpeedUnit.METER_PER_SECOND)
-    assert wlll.units.convert_wind_speed(raw) == pytest.approx(ms, rel=RTOL)
+    assert convert_wind_speed(raw, WindSpeedUnit.MILES_PER_HOUR) == mph
+    assert convert_wind_speed(raw, WindSpeedUnit.METER_PER_SECOND) == pytest.approx(ms, rel=RTOL)

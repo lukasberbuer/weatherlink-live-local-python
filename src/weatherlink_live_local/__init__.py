@@ -21,7 +21,7 @@ def discover(timeout: int = 1) -> list[discovery.ServiceInfo]:
     return discovery.Discovery.find(timeout=timeout)
 
 
-def parse_response(json_str: str) -> conditions.Conditions:
+def parse_response(json_str: str, units: units.Units) -> conditions.Conditions:
     """
     Parse JSON response from WeatherLink Live API.
 
@@ -32,10 +32,15 @@ def parse_response(json_str: str) -> conditions.Conditions:
         Conditions of all available sensors
     """
     json_dict = json.loads(json_str)
-    return conditions.Conditions.from_dict(json_dict["data"])
+    return conditions.Conditions.from_dict(json_dict["data"], units)
 
 
-def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Conditions:
+def get_conditions(
+    ip: str,
+    units: units.Units,
+    port: int = 80,
+    timeout: int = 1,
+) -> conditions.Conditions:
     """
     Read conditions from WeatherLink Live device + all connected sensors.
 
@@ -54,39 +59,4 @@ def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Cond
             raise RuntimeError(f"HTTP response code {resp.status}")
 
         json_str = resp.read().decode("utf-8")
-        return parse_response(json_str)
-
-
-def set_units(
-    temperature: units.TemperatureUnit | None = None,
-    pressure: units.PressureUnit | None = None,
-    rain: units.RainUnit | None = None,
-    wind_speed: units.WindSpeedUnit | None = None,
-):
-    """
-    Set desired units for conditions.
-
-    Args:
-        temperature: Temperature unit
-        pressure: Pressure unit
-        rain: Rain amount unit
-        wind_speed: Wind speed unit
-
-    Example:
-        >>> import weatherlink_live_local as wlll
-        >>> # change only a single unit
-        >>> wlll.set_units(temperature=wlll.units.TemperatureUnit.CELSIUS)
-        >>> # change multiple units at once
-        >>> wlll.set_units(
-        >>>     pressure=wlll.units.PressureUnit.HECTOPASCAL,
-        >>>     rain=wlll.units.RainUnit.MILLIMETER,
-        >>> )
-    """
-    if temperature is not None:
-        units.UNITS["temperature"] = temperature
-    if pressure is not None:
-        units.UNITS["pressure"] = pressure
-    if rain is not None:
-        units.UNITS["rain"] = rain
-    if wind_speed is not None:
-        units.UNITS["wind_speed"] = wind_speed
+        return parse_response(json_str, units)

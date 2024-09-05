@@ -103,14 +103,8 @@ def _counts_to_inch(counts: int) -> float:
 
 
 def test_parse_response():  # noqa: PLR0915
-    wlll.set_units(
-        temperature=wlll.units.TemperatureUnit.FAHRENHEIT,
-        pressure=wlll.units.PressureUnit.INCH_MERCURY,
-        rain=wlll.units.RainUnit.INCH,
-        wind_speed=wlll.units.WindSpeedUnit.MILES_PER_HOUR,
-    )
-
-    conditions = wlll.parse_response(RESPONSE)
+    units = wlll.units.Units()
+    conditions = wlll.parse_response(RESPONSE, units)
 
     assert conditions.timestamp == datetime.fromtimestamp(1531754005, timezone.utc)
 
@@ -196,12 +190,11 @@ def test_get_conditions():
         body=RESPONSE,
     )
 
-    wlll.set_units(
-        temperature=wlll.units.TemperatureUnit.FAHRENHEIT,
-        pressure=wlll.units.PressureUnit.INCH_MERCURY,
-        rain=wlll.units.RainUnit.INCH,
-        wind_speed=wlll.units.WindSpeedUnit.MILES_PER_HOUR,
+    units = wlll.units.Units(
+        temperature=wlll.units.TemperatureUnit.CELSIUS,
+        pressure=wlll.units.PressureUnit.HECTOPASCAL,
+        rain=wlll.units.RainUnit.MILLIMETER,
+        wind_speed=wlll.units.WindSpeedUnit.METER_PER_SECOND,
     )
-
-    conditions = wlll.get_conditions("127.0.0.1")
-    assert conditions == wlll.parse_response(RESPONSE)
+    conditions = wlll.get_conditions("127.0.0.1", units)
+    assert conditions == wlll.parse_response(RESPONSE, units)

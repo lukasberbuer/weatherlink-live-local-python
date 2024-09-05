@@ -8,6 +8,7 @@ from enum import IntEnum
 from typing import Any
 
 from weatherlink_live_local.units import (
+    Units,
     convert_pressure,
     convert_rain,
     convert_temperature,
@@ -32,7 +33,7 @@ class _SensorIdentifier:
     lsid: int  #: Logical sensor ID
 
     @classmethod
-    def from_dict(cls, json_data: dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any], units: Units):  # noqa: ARG003
         return cls(lsid=json_data["lsid"])
 
 
@@ -53,7 +54,7 @@ class _WirelessSensorUnit:
     trans_battery_flag: int  #: Transmitter battery flag
 
     @classmethod
-    def from_dict(cls, json_data: dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any], units: Units):  # noqa: ARG003
         return cls(
             txid=json_data["txid"],
             rx_state=(
@@ -113,7 +114,7 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
     uv_index: float | None  #: UV index
 
     @classmethod
-    def from_dict(cls, json_data: dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any], units: Units):
         rain_size_inches = {
             1: 0.01,  # 0.01"
             2: 0.2 / 25.4,  # 0.2 mm
@@ -133,23 +134,23 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
 
         assert json_data["data_structure_type"] == DataStructureType.SENSOR_SUITE
         return cls(
-            **asdict(_SensorIdentifier.from_dict(json_data)),
-            **asdict(_WirelessSensorUnit.from_dict(json_data)),
-            temp=convert_temperature(json_data["temp"]),
+            **asdict(_SensorIdentifier.from_dict(json_data, units)),
+            **asdict(_WirelessSensorUnit.from_dict(json_data, units)),
+            temp=convert_temperature(json_data["temp"], units.temperature),
             hum=json_data["hum"],
-            dew_point=convert_temperature(json_data["dew_point"]),
-            wet_bulb=convert_temperature(json_data["wet_bulb"]),
-            heat_index=convert_temperature(json_data["heat_index"]),
-            wind_chill=convert_temperature(json_data["wind_chill"]),
-            thw_index=convert_temperature(json_data["thw_index"]),
-            thsw_index=convert_temperature(json_data["thsw_index"]),
+            dew_point=convert_temperature(json_data["dew_point"], units.temperature),
+            wet_bulb=convert_temperature(json_data["wet_bulb"], units.temperature),
+            heat_index=convert_temperature(json_data["heat_index"], units.temperature),
+            wind_chill=convert_temperature(json_data["wind_chill"], units.temperature),
+            thw_index=convert_temperature(json_data["thw_index"], units.temperature),
+            thsw_index=convert_temperature(json_data["thsw_index"], units.temperature),
 
-            wind_speed_last=convert_wind_speed(json_data["wind_speed_last"]),
-            wind_speed_avg_last_1_min=convert_wind_speed(json_data["wind_speed_avg_last_1_min"]),
-            wind_speed_avg_last_2_min=convert_wind_speed(json_data["wind_speed_avg_last_2_min"]),
-            wind_speed_avg_last_10_min=convert_wind_speed(json_data["wind_speed_avg_last_10_min"]),
-            wind_speed_hi_last_2_min=convert_wind_speed(json_data["wind_speed_hi_last_2_min"]),
-            wind_speed_hi_last_10_min=convert_wind_speed(json_data["wind_speed_hi_last_10_min"]),
+            wind_speed_last=convert_wind_speed(json_data["wind_speed_last"], units.wind_speed),
+            wind_speed_avg_last_1_min=convert_wind_speed(json_data["wind_speed_avg_last_1_min"], units.wind_speed),
+            wind_speed_avg_last_2_min=convert_wind_speed(json_data["wind_speed_avg_last_2_min"], units.wind_speed),
+            wind_speed_avg_last_10_min=convert_wind_speed(json_data["wind_speed_avg_last_10_min"], units.wind_speed),
+            wind_speed_hi_last_2_min=convert_wind_speed(json_data["wind_speed_hi_last_2_min"], units.wind_speed),
+            wind_speed_hi_last_10_min=convert_wind_speed(json_data["wind_speed_hi_last_10_min"], units.wind_speed),
 
             wind_dir_last=json_data["wind_dir_last"],
             wind_dir_scalar_avg_last_1_min=json_data["wind_dir_scalar_avg_last_1_min"],
@@ -158,17 +159,17 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
             wind_dir_at_hi_speed_last_2_min=json_data["wind_dir_at_hi_speed_last_2_min"],
             wind_dir_at_hi_speed_last_10_min=json_data["wind_dir_at_hi_speed_last_10_min"],
 
-            rainfall_last_60_min=convert_rain(counts_to_inch(json_data["rainfall_last_60_min"])),
-            rainfall_last_24_hr=convert_rain(counts_to_inch(json_data["rainfall_last_24_hr"])),
-            rainfall_daily=convert_rain(counts_to_inch(json_data["rainfall_daily"])),
-            rainfall_monthly=convert_rain(counts_to_inch(json_data["rainfall_monthly"])),
-            rainfall_year=convert_rain(counts_to_inch(json_data["rainfall_year"])),
+            rainfall_last_60_min=convert_rain(counts_to_inch(json_data["rainfall_last_60_min"]), units.rain),
+            rainfall_last_24_hr=convert_rain(counts_to_inch(json_data["rainfall_last_24_hr"]), units.rain),
+            rainfall_daily=convert_rain(counts_to_inch(json_data["rainfall_daily"]), units.rain),
+            rainfall_monthly=convert_rain(counts_to_inch(json_data["rainfall_monthly"]), units.rain),
+            rainfall_year=convert_rain(counts_to_inch(json_data["rainfall_year"]), units.rain),
 
-            rain_rate_last=convert_rain(counts_to_inch(json_data["rain_rate_last"])),
-            rain_rate_hi_last_1_min=convert_rain(counts_to_inch(json_data["rain_rate_hi"])),
-            rain_rate_hi_last_15_min=convert_rain(counts_to_inch(json_data["rain_rate_hi_last_15_min"])),
+            rain_rate_last=convert_rain(counts_to_inch(json_data["rain_rate_last"]), units.rain),
+            rain_rate_hi_last_1_min=convert_rain(counts_to_inch(json_data["rain_rate_hi"]), units.rain),
+            rain_rate_hi_last_15_min=convert_rain(counts_to_inch(json_data["rain_rate_hi_last_15_min"]), units.rain),
 
-            rain_storm_last=convert_rain(counts_to_inch(json_data["rain_storm_last"])),
+            rain_storm_last=convert_rain(counts_to_inch(json_data["rain_storm_last"]), units.rain),
             rain_storm_last_start_at=to_datetime(json_data["rain_storm_last_start_at"]),
             rain_storm_last_end_at=to_datetime(json_data["rain_storm_last_end_at"]),
 
@@ -197,15 +198,15 @@ class MoistureTemperatureConditions(_SensorIdentifier, _WirelessSensorUnit):
     wet_leaf_2: float | None  #: Leaf wetness slot 2
 
     @classmethod
-    def from_dict(cls, json_data: dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any], units: Units):
         assert json_data["data_structure_type"] == DataStructureType.MOISTURE_TEMPERATURE
         return cls(
-            **asdict(_SensorIdentifier.from_dict(json_data)),
-            **asdict(_WirelessSensorUnit.from_dict(json_data)),
-            temp_1=convert_temperature(json_data["temp_1"]),
-            temp_2=convert_temperature(json_data["temp_2"]),
-            temp_3=convert_temperature(json_data["temp_3"]),
-            temp_4=convert_temperature(json_data["temp_4"]),
+            **asdict(_SensorIdentifier.from_dict(json_data, units)),
+            **asdict(_WirelessSensorUnit.from_dict(json_data, units)),
+            temp_1=convert_temperature(json_data["temp_1"], units.temperature),
+            temp_2=convert_temperature(json_data["temp_2"], units.temperature),
+            temp_3=convert_temperature(json_data["temp_3"], units.temperature),
+            temp_4=convert_temperature(json_data["temp_4"], units.temperature),
             moist_soil_1=json_data["moist_soil_1"],
             moist_soil_2=json_data["moist_soil_2"],
             moist_soil_3=json_data["moist_soil_3"],
@@ -228,13 +229,13 @@ class BarometricConditions(_SensorIdentifier):
     bar_absolute: float | None  #: Raw bar sensor reading [`PressureUnit`]
 
     @classmethod
-    def from_dict(cls, json_data: dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any], units: Units):
         assert json_data["data_structure_type"] == DataStructureType.BAROMETRIC
         return cls(
-            **asdict(_SensorIdentifier.from_dict(json_data)),
-            bar_absolute=convert_pressure(json_data["bar_absolute"]),
-            bar_sea_level=convert_pressure(json_data["bar_sea_level"]),
-            bar_trend=convert_pressure(json_data["bar_trend"]),
+            **asdict(_SensorIdentifier.from_dict(json_data, units)),
+            bar_absolute=convert_pressure(json_data["bar_absolute"], units.pressure),
+            bar_sea_level=convert_pressure(json_data["bar_sea_level"], units.pressure),
+            bar_trend=convert_pressure(json_data["bar_trend"], units.pressure),
         )
 
 
@@ -252,14 +253,14 @@ class InsideConditions(_SensorIdentifier):
     heat_index: float | None  #: Heat index [`TemperatureUnit`]
 
     @classmethod
-    def from_dict(cls, json_data: dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any], units: Units):
         assert json_data["data_structure_type"] == DataStructureType.INSIDE
         return cls(
-            **asdict(_SensorIdentifier.from_dict(json_data)),
-            temp=convert_temperature(json_data["temp_in"]),
+            **asdict(_SensorIdentifier.from_dict(json_data, units)),
+            temp=convert_temperature(json_data["temp_in"], units.temperature),
             hum=json_data["hum_in"],
-            dew_point=convert_temperature(json_data["dew_point_in"]),
-            heat_index=convert_temperature(json_data["heat_index_in"]),
+            dew_point=convert_temperature(json_data["dew_point_in"], units.temperature),
+            heat_index=convert_temperature(json_data["heat_index_in"], units.temperature),
         )
 
 
@@ -278,7 +279,7 @@ class Conditions:
     integrated_sensor_suites: list[SensorSuiteConditions]  #: Conditions of integrated sensor suite(s), e.g. Vantage Vue
 
     @classmethod
-    def from_dict(cls, json_data: dict[str, Any]):
+    def from_dict(cls, json_data: dict[str, Any], units: Units):
         def conditions_by_type(data_structure_type: DataStructureType):
             return filter(
                 lambda c: c["data_structure_type"] == data_structure_type,
@@ -288,17 +289,19 @@ class Conditions:
         return cls(
             timestamp=datetime.fromtimestamp(json_data["ts"], timezone.utc),
             inside=InsideConditions.from_dict(
-                next(conditions_by_type(DataStructureType.INSIDE))
+                next(conditions_by_type(DataStructureType.INSIDE)),
+                units
             ),
             barometric=BarometricConditions.from_dict(
-                next(conditions_by_type(DataStructureType.BAROMETRIC))
+                next(conditions_by_type(DataStructureType.BAROMETRIC)),
+                units
             ),
             moisture_temperature_stations=[
-                MoistureTemperatureConditions.from_dict(c)
+                MoistureTemperatureConditions.from_dict(c, units)
                 for c in conditions_by_type(DataStructureType.MOISTURE_TEMPERATURE)
             ],
             integrated_sensor_suites=[
-                SensorSuiteConditions.from_dict(c)
+                SensorSuiteConditions.from_dict(c, units)
                 for c in conditions_by_type(DataStructureType.SENSOR_SUITE)
             ],
         )
