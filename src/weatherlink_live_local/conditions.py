@@ -21,7 +21,7 @@ from weatherlink_live_local.units import (
 class _SensorIdentifier:
     """Sensor identifier used by all *Condition classes."""
 
-    lsid: int  # Logical sensor ID
+    lsid: int  #: Logical sensor ID
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
