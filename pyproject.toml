@@ -49,7 +49,6 @@ tools = [
     "hatch",
     "mypy>=0.9", # pyproject.toml support
     "ruff>=0.5",
-    "tox>=3.4",  # pyproject.toml support
 ]
 dev = [
     "weatherlink-live-local[docs,tests,tools]", # recursive dependency since pip 21.2
@@ -112,46 +111,6 @@ addopts = "-ra -q"        # test summary for (a)ll except passed
 testpaths = ["tests"]
 log_cli = true
 log_cli_level = "WARNING"
-
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = ruff, mypy, py37, py38, py39, py310, py311, py312, coverage-report
-
-[testenv:ruff]
-skip_install = true
-deps = ruff
-commands =
-    ruff check .
-
-[testenv:mypy]
-skip_install = true
-deps = mypy
-commands =
-    mypy src/
-
-[testenv]
-extras = tests
-deps = toml
-commands = 
-    coverage run -m pytest
-
-[testenv:coverage-report]
-skip_install = true
-deps =
-    coverage[toml]>=5
-commands =
-    - coverage combine
-    coverage report
-    coverage xml
-
-[testenv:docs]
-extras = docs
-changedir = docs
-commands =
-    sphinx-build -b linkcheck . _build
-    sphinx-build -b dummy . _build
-"""
 
 [tool.coverage.run]
 branch = true
