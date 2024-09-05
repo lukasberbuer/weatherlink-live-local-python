@@ -13,10 +13,10 @@ INSTALL_REQUIRES = [
 
 EXTRAS_REQUIRE = {
     "docs": [
-        "sphinx>=3.1",
+        "sphinx>=5",
         "sphinx-autodoc-typehints",
-        "sphinx-rtd-theme",
-        "m2r2",  # include markdown files
+        "furo",
+        "myst-parser",  # include markdown files
     ],
     "tests": [
         "coverage>=5",  # pyproject.toml support
@@ -32,7 +32,9 @@ EXTRAS_REQUIRE = {
     ],
 }
 
-EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["docs"] + EXTRAS_REQUIRE["tests"] + EXTRAS_REQUIRE["tools"]
+EXTRAS_REQUIRE["dev"] = (
+    EXTRAS_REQUIRE["docs"] + EXTRAS_REQUIRE["tests"] + EXTRAS_REQUIRE["tools"]
+)
 
 setup(
     name="weatherlink-live-local",
