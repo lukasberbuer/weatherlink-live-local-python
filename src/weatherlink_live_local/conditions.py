@@ -267,3 +267,23 @@ class Conditions:
     barometric: BarometricConditions  #: Barometric conditions of WeatherLink Live station
     moisture_temperature_stations: list[MoistureTemperatureConditions]  #: Conditions of leaf & soil moisture/temperature station(s)
     integrated_sensor_suites: list[SensorSuiteConditions]  #: Conditions of integrated sensor suite(s), e.g. Vantage Vue
+
+    @classmethod
+    def from_dict(cls, json_data: dict[str, Any]):
+        def conditions_by_type(data_structure_type: int):
+            return filter(
+                lambda c: c["data_structure_type"] == data_structure_type,
+                json_data["conditions"],
+            )
+
+        return cls(
+            timestamp=datetime.fromtimestamp(json_data["ts"], timezone.utc),
+            inside=InsideConditions.from_dict(next(conditions_by_type(4))),
+            barometric=BarometricConditions.from_dict(next(conditions_by_type(3))),
+            moisture_temperature_stations=[
+                MoistureTemperatureConditions.from_dict(c) for c in conditions_by_type(2)
+            ],
+            integrated_sensor_suites=[
+                SensorSuiteConditions.from_dict(c) for c in conditions_by_type(1)
+            ],
+        )

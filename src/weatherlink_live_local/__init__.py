@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import urllib.request
-from datetime import datetime, timezone
 
 from weatherlink_live_local import conditions, discovery, units
 
@@ -42,24 +41,7 @@ def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Cond
 
         content = json.loads(resp.read().decode("utf-8"))
         json_data = content["data"]
-
-        def conditions_by_type(type_: int):
-            return filter(
-                lambda c: c["data_structure_type"] == type_,
-                json_data["conditions"],
-            )
-
-        return conditions.Conditions(
-            timestamp=datetime.fromtimestamp(json_data["ts"], timezone.utc),
-            inside=conditions.InsideConditions.from_dict(next(conditions_by_type(4))),
-            barometric=conditions.BarometricConditions.from_dict(next(conditions_by_type(3))),
-            moisture_temperature_stations=[
-                conditions.MoistureTemperatureConditions.from_dict(c) for c in conditions_by_type(2)
-            ],
-            integrated_sensor_suites=[
-                conditions.SensorSuiteConditions.from_dict(c) for c in conditions_by_type(1)
-            ],
-        )
+        return conditions.Conditions.from_dict(json_data)
 
 
 def set_units(
@@ -69,7 +51,7 @@ def set_units(
     wind_speed: units.WindSpeedUnit | None = None,
 ):
     """
-    Set desired units for `get_conditions` command.
+    Set desired units for conditions.
 
     Args:
         temperature: Temperature unit
