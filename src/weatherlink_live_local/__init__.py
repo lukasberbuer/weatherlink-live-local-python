@@ -27,6 +27,7 @@ def parse_response(json_str: str, units: units.Units) -> conditions.Conditions:
 
     Args:
         json_str: Raw JSON response as str
+        units: Units of the conditions
 
     Returns:
         Conditions of all available sensors
@@ -47,6 +48,7 @@ def get_conditions(
     Args:
         ip: IP address of WeatherLink Live device.
             Use `discover` function to find devices with their IP address in the local network.
+        units: Units of the conditions
         port: Port number of HTTP interface, should be 80
         timeout: Maximum time to listen for WeatherLink Live services
 
