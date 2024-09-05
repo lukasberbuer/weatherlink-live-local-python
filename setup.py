@@ -8,7 +8,7 @@ with open(HERE / "README.md", encoding="utf-8") as f:
 
 INSTALL_REQUIRES = [
     "zeroconf",
-    "dataclasses>=0.6; python_version<'3.7'", 
+    "dataclasses>=0.6; python_version<'3.7'",
 ]
 
 EXTRAS_REQUIRE = {
@@ -51,6 +51,9 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Operating System :: OS Independent",
     ],
     keywords=[
