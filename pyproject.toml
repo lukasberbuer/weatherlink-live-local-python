@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "weatherlink-live-local"
-version = "0.2.1"
+version = "0.3.0"
 description = "Read current weather data from Davis WeatherLink Live units + connected sensors"
 authors = [{ name = "Lukas Berbuer", email = "lukas.berbuer@gmail.com" }]
 readme = "README.md"
