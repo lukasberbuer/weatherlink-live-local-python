@@ -1,7 +1,8 @@
 """Units and conversion from default imperial system."""
 
+from __future__ import annotations
+
 from enum import Enum
-from typing import Optional
 
 
 class TemperatureUnit(Enum):
@@ -41,7 +42,7 @@ UNITS = {
 }
 
 
-def convert_temperature(fahrenheit: Optional[float]) -> Optional[float]:
+def convert_temperature(fahrenheit: float | None) -> float | None:
     """Convert imperial temperature (Fahrenheit) to selected unit."""
     if fahrenheit is None:
         return None
@@ -53,7 +54,7 @@ def convert_temperature(fahrenheit: Optional[float]) -> Optional[float]:
     raise ValueError(f"Invalid temperature unit '{unit}'")
 
 
-def convert_pressure(inhg: Optional[float]) -> Optional[float]:
+def convert_pressure(inhg: float | None) -> float | None:
     """Convert imperial pressure (inches of mercury) to selected unit."""
     if inhg is None:
         return None
@@ -65,7 +66,7 @@ def convert_pressure(inhg: Optional[float]) -> Optional[float]:
     raise ValueError(f"Invalid pressure unit '{unit}'")
 
 
-def convert_rain(inch: Optional[float]) -> Optional[float]:
+def convert_rain(inch: float | None) -> float | None:
     """Convert imperial rain amount (inch) to selected unit."""
     if inch is None:
         return None
@@ -77,7 +78,7 @@ def convert_rain(inch: Optional[float]) -> Optional[float]:
     raise ValueError(f"Invalid rain unit '{unit}'")
 
 
-def convert_wind_speed(mph: Optional[float]) -> Optional[float]:
+def convert_wind_speed(mph: float | None) -> float | None:
     """Convert imperial wind speed (miles per hour) to selected unit."""
     if mph is None:
         return None

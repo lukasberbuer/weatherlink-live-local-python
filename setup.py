@@ -23,10 +23,8 @@ EXTRAS_REQUIRE = {
         "pytest>=6",  # pyproject.toml support
     ],
     "tools": [
-        "black",
-        "isort",
-        "mypy",
-        "pylint>=2.5",  # pyproject.toml support
+        "mypy>=0.9",  # pyproject.toml support
+        "ruff>=0.5",
         "tox>=3.4",  # pyproject.toml support
     ],
 }

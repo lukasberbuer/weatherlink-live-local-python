@@ -6,10 +6,11 @@ RTOL = 0.001
 
 
 @pytest.mark.parametrize(
-    "raw, fahrenheit, celsius", (
+    ("raw", "fahrenheit", "celsius"),
+    [
         (0, 0, -17.7778),
         (32, 32, 0),
-    )
+    ],
 )
 def test_convert_temperature(raw, fahrenheit, celsius):
     wlll.set_units(temperature=wlll.units.TemperatureUnit.FAHRENHEIT)
@@ -19,10 +20,11 @@ def test_convert_temperature(raw, fahrenheit, celsius):
 
 
 @pytest.mark.parametrize(
-    "raw, inhg, hpa", (
+    ("raw", "inhg", "hpa"),
+    [
         (0, 0, 0),
         (1, 1, 33.86),
-    )
+    ],
 )
 def test_convert_pressure(raw, inhg, hpa):
     wlll.set_units(pressure=wlll.units.PressureUnit.INCH_MERCURY)
@@ -32,10 +34,11 @@ def test_convert_pressure(raw, inhg, hpa):
 
 
 @pytest.mark.parametrize(
-    "raw, mph, ms", (
+    ("raw", "mph", "ms"),
+    [
         (0, 0, 0),
         (1, 1, 0.44704),
-    )
+    ],
 )
 def test_convert_wind_speed(raw, mph, ms):
     wlll.set_units(wind_speed=wlll.units.WindSpeedUnit.MILES_PER_HOUR)

@@ -31,8 +31,8 @@ class Discovery(zeroconf.ServiceListener):
         self.services: set[str] = set()
 
     # pylint: disable=unused-argument
-    def add_service(self, zc: zeroconf.Zeroconf, type_: str, name: str) -> None:
-        logger.info(f"Found WeatherLink Live service '{name}'")
+    def add_service(self, zc: zeroconf.Zeroconf, type_: str, name: str) -> None:  # noqa: ARG002
+        logger.info("Found WeatherLink Live service '%s'", name)
         self.services.add(name)
 
     def remove_service(self, zc: zeroconf.Zeroconf, type_: str, name: str) -> None: ...

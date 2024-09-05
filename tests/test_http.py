@@ -1,13 +1,9 @@
-import json
 import re
-import urllib.request
-from datetime import datetime
+from datetime import datetime, timezone
 
-import pytest
 from httpretty import HTTPretty, httprettified
 
 import weatherlink_live_local as wlll
-
 
 RESPONSE_COMMENTS = """
 {
@@ -97,6 +93,7 @@ RESPONSE_COMMENTS = """
     "error":null
 }
 """
+
 RESPONSE = re.sub(r"\s+//.*$", "", RESPONSE_COMMENTS, flags=re.MULTILINE)
 RAIN_SIZE_INCH = 0.2 / 25.4
 
@@ -106,7 +103,7 @@ def _counts_to_inch(counts: int) -> float:
 
 
 @httprettified
-def test_http_get():
+def test_http_get():  # noqa: PLR0915
     HTTPretty.register_uri(
         HTTPretty.GET,
         "http://127.0.0.1/v1/current_conditions",
@@ -121,7 +118,7 @@ def test_http_get():
     )
     conditions = wlll.get_conditions("127.0.0.1")
 
-    assert conditions.timestamp == datetime.fromtimestamp(1531754005)
+    assert conditions.timestamp == datetime.fromtimestamp(1531754005, timezone.utc)
 
     inside = conditions.inside
     assert isinstance(inside, wlll.conditions.InsideConditions)
@@ -136,24 +133,24 @@ def test_http_get():
     assert barometric.lsid == 48306
     assert barometric.bar_absolute == 30.008
     assert barometric.bar_sea_level == 30.008
-    assert barometric.bar_trend == None
+    assert barometric.bar_trend is None
 
     assert len(conditions.moisture_temperature_stations) == 1
     mt0 = conditions.moisture_temperature_stations[0]
     assert isinstance(mt0, wlll.conditions.MoistureTemperatureConditions)
     assert mt0.txid == 3
-    assert mt0.rx_state == None
-    assert mt0.trans_battery_flag == None
-    assert mt0.temp_1 == None
-    assert mt0.temp_2 == None
-    assert mt0.temp_3 == None
-    assert mt0.temp_4 == None
-    assert mt0.moist_soil_1 == None
-    assert mt0.moist_soil_2 == None
-    assert mt0.moist_soil_3 == None
-    assert mt0.moist_soil_4 == None
-    assert mt0.wet_leaf_1 == None
-    assert mt0.wet_leaf_2 == None
+    assert mt0.rx_state is None
+    assert mt0.trans_battery_flag is None
+    assert mt0.temp_1 is None
+    assert mt0.temp_2 is None
+    assert mt0.temp_3 is None
+    assert mt0.temp_4 is None
+    assert mt0.moist_soil_1 is None
+    assert mt0.moist_soil_2 is None
+    assert mt0.moist_soil_3 is None
+    assert mt0.moist_soil_4 is None
+    assert mt0.wet_leaf_1 is None
+    assert mt0.wet_leaf_2 is None
 
     assert len(conditions.integrated_sensor_suites) == 1
     iss0 = conditions.integrated_sensor_suites[0]
@@ -165,7 +162,7 @@ def test_http_get():
     assert iss0.temp == 62.7
     assert iss0.hum == 1.1
     assert iss0.dew_point == -0.3
-    assert iss0.wet_bulb == None
+    assert iss0.wet_bulb is None
     assert iss0.heat_index == 5.5
     assert iss0.wind_chill == 6.0
     assert iss0.thw_index == 5.5
@@ -176,22 +173,22 @@ def test_http_get():
     assert iss0.wind_speed_avg_last_10_min == 42606
     assert iss0.wind_speed_hi_last_2_min == 8
     assert iss0.wind_speed_hi_last_10_min == 8
-    assert iss0.wind_dir_last == None
+    assert iss0.wind_dir_last is None
     assert iss0.wind_dir_scalar_avg_last_1_min == 15
     assert iss0.wind_dir_scalar_avg_last_2_min == 170.7
     assert iss0.wind_dir_scalar_avg_last_10_min == 4822.5
     assert iss0.wind_dir_at_hi_speed_last_2_min == 0.0
     assert iss0.wind_dir_at_hi_speed_last_10_min == 0.0
-    assert iss0.rainfall_last_60_min == None
-    assert iss0.rainfall_last_24_hr == None
+    assert iss0.rainfall_last_60_min is None
+    assert iss0.rainfall_last_24_hr is None
     assert iss0.rainfall_daily == _counts_to_inch(63)
     assert iss0.rainfall_monthly == _counts_to_inch(63)
     assert iss0.rainfall_year == _counts_to_inch(63)
     assert iss0.rain_rate_last == 0
-    assert iss0.rain_rate_hi_last_1_min == None
+    assert iss0.rain_rate_hi_last_1_min is None
     assert iss0.rain_rate_hi_last_15_min == 0
-    assert iss0.rain_storm_last == None
-    assert iss0.rain_storm_last_start_at == None
-    assert iss0.rain_storm_last_end_at == None
+    assert iss0.rain_storm_last is None
+    assert iss0.rain_storm_last_start_at is None
+    assert iss0.rain_storm_last_end_at is None
     assert iss0.solar_rad == 747
     assert iss0.uv_index == 5.5

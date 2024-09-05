@@ -1,30 +1,28 @@
-[tool.black]
+[tool.ruff]
+include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py"]
 line-length = 100
 
-[tool.isort]
-line_length = 100
-multi_line_output = 3
-include_trailing_comma = true
-use_parentheses = true
-
-[tool.pylint.message_control]
-disable = [
-    "import-error",
-    "missing-function-docstring",
-    "logging-fstring-interpolation",
-    "too-many-instance-attributes",
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",     # flake8-annotations
+    "COM812",  # Trailing comma missing, conflicts with ruff format
+    "D",       # pydocstyle
+    "E501",    # Line too long
+    "EM102",   # Exception must not use an f-string literal, assign to variable first
+    "PLR2004", # Magic value used in comparison
+    "S101",    # Use of `assert` detected
+    "TRY003",  # Avoid specifying long messages outside the exception class
 ]
 
-[tool.pylint.format]
-max-line-length = 100
-good-names = [
-    "logger",
-    "ip",
-    "zc",
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "INP001",  # File is part of an implicit namespace package. Add an __init__.py.
+    "PLR2004", # Magic value used in comparison
 ]
 
 [tool.mypy]
-ignore_missing_imports = true  # not supported yet
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -36,57 +34,34 @@ log_cli_level = "WARNING"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = black, isort, pylint, mypy, py36, py37, py38, py39, coverage-report
+envlist = ruff, mypy, py37, py38, py39, py310, py311, py312, coverage-report
 
-[testenv:black]
+[testenv:ruff]
 skip_install = true
-deps = black
+deps = ruff
 commands =
-    black --diff src/
-    black --check src/
-
-[testenv:isort]
-skip_install = true
-deps = isort>5
-commands =
-    isort --diff src/
-    isort --check-only src/
-
-[testenv:pylint]
-skip_install = true
-deps = pylint
-commands = pylint src/
+    ruff check .
 
 [testenv:mypy]
 skip_install = true
 deps = mypy
-commands = mypy --ignore-missing-imports src/
+commands =
+    mypy .
 
 [testenv]
 extras = tests
 deps = toml
 commands = 
-    coverage run --parallel -m pytest
+    coverage run -m pytest
 
 [testenv:coverage-report]
 skip_install = true
 deps =
-    coverage>=5
-    toml
+    coverage[toml]>=5
 commands =
     - coverage combine
     coverage report
-
-[testenv:coveralls]
-skip_install = true
-deps =
-    coverage>=5
-    coveralls
-    toml
-passenv = GITHUB_*
-commands = 
-    - coverage combine
-    coveralls --service=github
+    coverage xml
 
 [testenv:docs]
 extras = docs

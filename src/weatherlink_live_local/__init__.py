@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import urllib.request
-from datetime import datetime
+from datetime import datetime, timezone
 
 from . import conditions, discovery, units
 
@@ -53,7 +53,7 @@ def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Cond
             )
 
         return conditions.Conditions(
-            timestamp=datetime.fromtimestamp(json_data["ts"]),
+            timestamp=datetime.fromtimestamp(json_data["ts"], timezone.utc),
             inside=conditions.InsideConditions.from_dict(next(conditions_by_type(4))),
             barometric=conditions.BarometricConditions.from_dict(next(conditions_by_type(3))),
             moisture_temperature_stations=[

@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import IntEnum
-from typing import Any, Optional
+from typing import Any
 
 from .units import convert_pressure, convert_rain, convert_temperature, convert_wind_speed
 
@@ -36,7 +36,7 @@ class _WirelessSensorUnit:
     """Wireless sensor unit information."""
 
     txid: int  #: Transmitter ID
-    rx_state: Optional[RadioReceptionState]  #: Radio reception state
+    rx_state: RadioReceptionState | None  #: Radio reception state
     trans_battery_flag: int  #: Transmitter battery flag
 
     @classmethod
@@ -59,45 +59,45 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
     Data structure for `data_structure_type = 1`
     """
 
-    temp: Optional[float]  #: Temperature [`TemperatureUnit`]
-    hum: Optional[float]  #: Humidity [%]
-    dew_point: Optional[float]  #: Dew point [`TemperatureUnit`]
-    wet_bulb: Optional[float]  #: Wet bulb [`TemperatureUnit`]
-    heat_index: Optional[float]  #: Heat index [`TemperatureUnit`]
-    wind_chill: Optional[float]  #: Wind chill [`TemperatureUnit`]
-    thw_index: Optional[float]  #: THW index [`TemperatureUnit`]
-    thsw_index: Optional[float]  #: THSW index [`TemperatureUnit`]
+    temp: float | None  #: Temperature [`TemperatureUnit`]
+    hum: float | None  #: Humidity [%]
+    dew_point: float | None  #: Dew point [`TemperatureUnit`]
+    wet_bulb: float | None  #: Wet bulb [`TemperatureUnit`]
+    heat_index: float | None  #: Heat index [`TemperatureUnit`]
+    wind_chill: float | None  #: Wind chill [`TemperatureUnit`]
+    thw_index: float | None  #: THW index [`TemperatureUnit`]
+    thsw_index: float | None  #: THSW index [`TemperatureUnit`]
 
-    wind_speed_last: Optional[float]  #: Most recent wind speed [`WindSpeedUnit`]
-    wind_speed_avg_last_1_min: Optional[float]  #: Average wind speed over last 1 min [`WindSpeedUnit`]
-    wind_speed_avg_last_2_min: Optional[float]  #: Average wind speed over last 2 min [`WindSpeedUnit`]
-    wind_speed_avg_last_10_min: Optional[float]  #: Average wind speed over last 10 min [`WindSpeedUnit`]
-    wind_speed_hi_last_2_min: Optional[float]  #: Maximum wind speed over last 2 min [`WindSpeedUnit`]
-    wind_speed_hi_last_10_min: Optional[float]  #: Maximum wind speed over last 10 min [`WindSpeedUnit`]
+    wind_speed_last: float | None  #: Most recent wind speed [`WindSpeedUnit`]
+    wind_speed_avg_last_1_min: float | None  #: Average wind speed over last 1 min [`WindSpeedUnit`]
+    wind_speed_avg_last_2_min: float | None  #: Average wind speed over last 2 min [`WindSpeedUnit`]
+    wind_speed_avg_last_10_min: float | None  #: Average wind speed over last 10 min [`WindSpeedUnit`]
+    wind_speed_hi_last_2_min: float | None  #: Maximum wind speed over last 2 min [`WindSpeedUnit`]
+    wind_speed_hi_last_10_min: float | None  #: Maximum wind speed over last 10 min [`WindSpeedUnit`]
 
-    wind_dir_last: Optional[float]  #: Wind direction [°]
-    wind_dir_scalar_avg_last_1_min: Optional[float]  #: Average wind direction over last 1 min [°]
-    wind_dir_scalar_avg_last_2_min: Optional[float]  #: Average wind direction over last 2 min [°]
-    wind_dir_scalar_avg_last_10_min: Optional[float]  #: Average wind direction over last 10 min [°]
-    wind_dir_at_hi_speed_last_2_min: Optional[float]  #: Gust wind direction over last 2 min [°]
-    wind_dir_at_hi_speed_last_10_min: Optional[float]  #: Gust wind direction over last 10 min [°]
+    wind_dir_last: float | None  #: Wind direction [°]
+    wind_dir_scalar_avg_last_1_min: float | None  #: Average wind direction over last 1 min [°]
+    wind_dir_scalar_avg_last_2_min: float | None  #: Average wind direction over last 2 min [°]
+    wind_dir_scalar_avg_last_10_min: float | None  #: Average wind direction over last 10 min [°]
+    wind_dir_at_hi_speed_last_2_min: float | None  #: Gust wind direction over last 2 min [°]
+    wind_dir_at_hi_speed_last_10_min: float | None  #: Gust wind direction over last 10 min [°]
 
-    rainfall_last_60_min: Optional[float]  #: Total rain for last 60 min [`RainUnit`]
-    rainfall_last_24_hr: Optional[float]  #: Total rain for last 24 hours [`RainUnit`]
-    rainfall_daily: Optional[float]  #: Total rain since local midnight [`RainUnit`]
-    rainfall_monthly: Optional[float]  #: Total rain since first of month [`RainUnit`]
-    rainfall_year: Optional[float]  #: Total rain since first of user-chosen month at local midnight [`RainUnit`]
+    rainfall_last_60_min: float | None  #: Total rain for last 60 min [`RainUnit`]
+    rainfall_last_24_hr: float | None  #: Total rain for last 24 hours [`RainUnit`]
+    rainfall_daily: float | None  #: Total rain since local midnight [`RainUnit`]
+    rainfall_monthly: float | None  #: Total rain since first of month [`RainUnit`]
+    rainfall_year: float | None  #: Total rain since first of user-chosen month at local midnight [`RainUnit`]
 
-    rain_rate_last: Optional[float]  #: Rain rate [`RainUnit`/hour]
-    rain_rate_hi_last_1_min: Optional[float]  #: Highest rain rate over last 1 min [`RainUnit`/hour]
-    rain_rate_hi_last_15_min: Optional[float]  #: Highest rain rate over last 15 min [`RainUnit`/hour]
+    rain_rate_last: float | None  #: Rain rate [`RainUnit`/hour]
+    rain_rate_hi_last_1_min: float | None  #: Highest rain rate over last 1 min [`RainUnit`/hour]
+    rain_rate_hi_last_15_min: float | None  #: Highest rain rate over last 15 min [`RainUnit`/hour]
 
-    rain_storm_last: Optional[float]  #: Total rain since last 24 hour long break in rain [`RainUnit`]
-    rain_storm_last_start_at: Optional[datetime]  #: Timestamp of last rain storm start
-    rain_storm_last_end_at: Optional[datetime]  #: Timestamp of last rain storm start
+    rain_storm_last: float | None  #: Total rain since last 24 hour long break in rain [`RainUnit`]
+    rain_storm_last_start_at: datetime | None  #: Timestamp of last rain storm start
+    rain_storm_last_end_at: datetime | None  #: Timestamp of last rain storm start
 
-    solar_rad: Optional[float]  #: Solar radiation [W/m²]
-    uv_index: Optional[float]  #: UV index
+    solar_rad: float | None  #: Solar radiation [W/m²]
+    uv_index: float | None  #: UV index
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
@@ -108,17 +108,17 @@ class SensorSuiteConditions(_SensorIdentifier, _WirelessSensorUnit):
             4: 0.001,  # 0.001"
         }[json_data["rain_size"]]
 
-        def counts_to_inch(counts: Optional[int]) -> Optional[float]:
+        def counts_to_inch(counts: int | None) -> float | None:
             if counts is None:
                 return None
             return counts * rain_size_inches
 
-        def to_datetime(timestamp: Optional[int]) -> Optional[datetime]:
+        def to_datetime(timestamp: int | None) -> datetime | None:
             if timestamp is None:
                 return None
-            return datetime.fromtimestamp(timestamp)
+            return datetime.fromtimestamp(timestamp, timezone.utc)
 
-        return cls(  # type: ignore
+        return cls(
             **asdict(_SensorIdentifier.from_dict(json_data)),
             **asdict(_WirelessSensorUnit.from_dict(json_data)),
             temp=convert_temperature(json_data["temp"]),
@@ -171,21 +171,21 @@ class MoistureTemperatureConditions(_SensorIdentifier, _WirelessSensorUnit):
     Data structure for `data_structure_type = 2`
     """
 
-    temp_1: Optional[float]  #: Temperature slot 1 [`TemperatureUnit`]
-    temp_2: Optional[float]  #: Temperature slot 2 [`TemperatureUnit`]
-    temp_3: Optional[float]  #: Temperature slot 3 [`TemperatureUnit`]
-    temp_4: Optional[float]  #: Temperature slot 4 [`TemperatureUnit`]
-    moist_soil_1: Optional[float]  #: Moisture soil slot 1 [cb]
-    moist_soil_2: Optional[float]  #: Moisture soil slot 2 [cb]
-    moist_soil_3: Optional[float]  #: Moisture soil slot 3 [cb]
-    moist_soil_4: Optional[float]  #: Moisture soil slot 4 [cb]
-    wet_leaf_1: Optional[float]  #: Leaf wetness slot 1
-    wet_leaf_2: Optional[float]  #: Leaf wetness slot 2
+    temp_1: float | None  #: Temperature slot 1 [`TemperatureUnit`]
+    temp_2: float | None  #: Temperature slot 2 [`TemperatureUnit`]
+    temp_3: float | None  #: Temperature slot 3 [`TemperatureUnit`]
+    temp_4: float | None  #: Temperature slot 4 [`TemperatureUnit`]
+    moist_soil_1: float | None  #: Moisture soil slot 1 [cb]
+    moist_soil_2: float | None  #: Moisture soil slot 2 [cb]
+    moist_soil_3: float | None  #: Moisture soil slot 3 [cb]
+    moist_soil_4: float | None  #: Moisture soil slot 4 [cb]
+    wet_leaf_1: float | None  #: Leaf wetness slot 1
+    wet_leaf_2: float | None  #: Leaf wetness slot 2
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
         assert json_data["data_structure_type"] == 2
-        return cls(  # type: ignore
+        return cls(
             **asdict(_SensorIdentifier.from_dict(json_data)),
             **asdict(_WirelessSensorUnit.from_dict(json_data)),
             temp_1=convert_temperature(json_data["temp_1"]),
@@ -209,14 +209,14 @@ class BarometricConditions(_SensorIdentifier):
     Data structure for `data_structure_type = 3`
     """
 
-    bar_sea_level: Optional[float]  #: Most recent bar sensor reading with elevation adjustment [`PressureUnit`]
-    bar_trend: Optional[float]  #: Current 3 hour bar trend [`PressureUnit`]
-    bar_absolute: Optional[float]  #: Raw bar sensor reading [`PressureUnit`]
+    bar_sea_level: float | None  #: Most recent bar sensor reading with elevation adjustment [`PressureUnit`]
+    bar_trend: float | None  #: Current 3 hour bar trend [`PressureUnit`]
+    bar_absolute: float | None  #: Raw bar sensor reading [`PressureUnit`]
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
         assert json_data["data_structure_type"] == 3
-        return cls(  # type: ignore
+        return cls(
             **asdict(_SensorIdentifier.from_dict(json_data)),
             bar_absolute=convert_pressure(json_data["bar_absolute"]),
             bar_sea_level=convert_pressure(json_data["bar_sea_level"]),
@@ -232,15 +232,15 @@ class InsideConditions(_SensorIdentifier):
     Data structure for `data_structure_type = 4`
     """
 
-    temp: Optional[float]  #: Inside temperature [`TemperatureUnit`]
-    hum: Optional[float]  #: Inside humidity [%]
-    dew_point: Optional[float]  #: Dew point [`TemperatureUnit`]
-    heat_index: Optional[float]  #: Heat index [`TemperatureUnit`]
+    temp: float | None  #: Inside temperature [`TemperatureUnit`]
+    hum: float | None  #: Inside humidity [%]
+    dew_point: float | None  #: Dew point [`TemperatureUnit`]
+    heat_index: float | None  #: Heat index [`TemperatureUnit`]
 
     @classmethod
     def from_dict(cls, json_data: dict[str, Any]):
         assert json_data["data_structure_type"] == 4
-        return cls(  # type: ignore
+        return cls(
             **asdict(_SensorIdentifier.from_dict(json_data)),
             temp=convert_temperature(json_data["temp_in"]),
             hum=json_data["hum_in"],
