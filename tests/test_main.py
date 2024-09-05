@@ -102,21 +102,15 @@ def _counts_to_inch(counts: int) -> float:
     return counts * RAIN_SIZE_INCH
 
 
-@httprettified
-def test_http_get():  # noqa: PLR0915
-    HTTPretty.register_uri(
-        HTTPretty.GET,
-        "http://127.0.0.1/v1/current_conditions",
-        body=RESPONSE,
-    )
-
+def test_parse_response():  # noqa: PLR0915
     wlll.set_units(
         temperature=wlll.units.TemperatureUnit.FAHRENHEIT,
         pressure=wlll.units.PressureUnit.INCH_MERCURY,
         rain=wlll.units.RainUnit.INCH,
         wind_speed=wlll.units.WindSpeedUnit.MILES_PER_HOUR,
     )
-    conditions = wlll.get_conditions("127.0.0.1")
+
+    conditions = wlll.parse_response(RESPONSE)
 
     assert conditions.timestamp == datetime.fromtimestamp(1531754005, timezone.utc)
 
@@ -192,3 +186,22 @@ def test_http_get():  # noqa: PLR0915
     assert iss0.rain_storm_last_end_at is None
     assert iss0.solar_rad == 747
     assert iss0.uv_index == 5.5
+
+
+@httprettified
+def test_get_conditions():
+    HTTPretty.register_uri(
+        HTTPretty.GET,
+        "http://127.0.0.1/v1/current_conditions",
+        body=RESPONSE,
+    )
+
+    wlll.set_units(
+        temperature=wlll.units.TemperatureUnit.FAHRENHEIT,
+        pressure=wlll.units.PressureUnit.INCH_MERCURY,
+        rain=wlll.units.RainUnit.INCH,
+        wind_speed=wlll.units.WindSpeedUnit.MILES_PER_HOUR,
+    )
+
+    conditions = wlll.get_conditions("127.0.0.1")
+    assert conditions == wlll.parse_response(RESPONSE)

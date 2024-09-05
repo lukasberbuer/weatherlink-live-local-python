@@ -21,6 +21,20 @@ def discover(timeout: int = 1) -> list[discovery.ServiceInfo]:
     return discovery.Discovery.find(timeout=timeout)
 
 
+def parse_response(json_str: str) -> conditions.Conditions:
+    """
+    Parse JSON response from WeatherLink Live API.
+
+    Args:
+        json_str: Raw JSON response as str
+
+    Returns:
+        Conditions of all available sensors
+    """
+    json_dict = json.loads(json_str)
+    return conditions.Conditions.from_dict(json_dict["data"])
+
+
 def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Conditions:
     """
     Read conditions from WeatherLink Live device + all connected sensors.
@@ -39,9 +53,8 @@ def get_conditions(ip: str, port: int = 80, timeout: int = 1) -> conditions.Cond
         if resp.status != 200:
             raise RuntimeError(f"HTTP response code {resp.status}")
 
-        content = json.loads(resp.read().decode("utf-8"))
-        json_data = content["data"]
-        return conditions.Conditions.from_dict(json_data)
+        json_str = resp.read().decode("utf-8")
+        return parse_response(json_str)
 
 
 def set_units(
