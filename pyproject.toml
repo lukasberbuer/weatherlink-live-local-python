@@ -1,3 +1,84 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "weatherlink-live-local"
+version = "0.2.1"
+description = "Read current weather data from Davis WeatherLink Live units + connected sensors"
+authors = [{ name = "Lukas Berbuer", email = "lukas.berbuer@gmail.com" }]
+readme = "README.md"
+license = { text = "MIT License" }
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+keywords = [
+    "davis",
+    "weatherlink",
+    "local",
+    "api",
+    "weather",
+    "iot",
+    "smarthome",
+]
+dependencies = ["zeroconf"]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx>=5",
+    "sphinx-autodoc-typehints",
+    "furo",
+    "myst-parser",              # include markdown files
+]
+tests = [
+    "coverage>=5", # pyproject.toml support
+    "httpretty",
+    "pytest>=6",   # pyproject.toml support
+]
+tools = [
+    "hatch",
+    "mypy>=0.9", # pyproject.toml support
+    "ruff>=0.5",
+    "tox>=3.4",  # pyproject.toml support
+]
+dev = [
+    "weatherlink-live-local[docs,tests,tools]", # recursive dependency since pip 21.2
+]
+
+[project.urls]
+Changelog = "https://github.com/lukasberbuer/weatherlink-live-local-python/blob/master/CHANGELOG.md"
+Issues = "https://github.com/lukasberbuer/weatherlink-live-local-python/issues"
+Repository = "https://github.com/lukasberbuer/weatherlink-live-local-python"
+
+[tool.hatch.envs.hatch-test]
+features = ["tests"]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.typing]
+dependencies = ["mypy"]
+skip-install = true
+[tool.hatch.envs.typing.scripts]
+check = "mypy ."
+
+[tool.hatch.envs.docs]
+features = ["docs"]
+[tool.hatch.envs.docs.scripts]
+linkcheck = "sphinx-build -b linkcheck docs/ docs/_build"
+dummy = "sphinx-build -b dummy docs/ docs/_build"
+html = "sphinx-build -b html docs/ docs/_build"
+
 [tool.ruff]
 include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py"]
 line-length = 100
@@ -26,7 +107,7 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-ra -q"  # test summary for (a)ll except passed
+addopts = "-ra -q"        # test summary for (a)ll except passed
 testpaths = ["tests"]
 log_cli = true
 log_cli_level = "WARNING"
