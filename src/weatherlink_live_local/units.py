@@ -33,12 +33,12 @@ class WindSpeedUnit(Enum):
 
 
 # store selected units and set defaults
-UNITS = dict(
-    temperature=TemperatureUnit.FAHRENHEIT,
-    pressure=PressureUnit.INCH_MERCURY,
-    rain=RainUnit.INCH,
-    wind_speed=WindSpeedUnit.MILES_PER_HOUR,
-)
+UNITS = {
+    "temperature": TemperatureUnit.FAHRENHEIT,
+    "pressure": PressureUnit.INCH_MERCURY,
+    "rain": RainUnit.INCH,
+    "wind_speed": WindSpeedUnit.MILES_PER_HOUR,
+}
 
 
 def convert_temperature(fahrenheit: Optional[float]) -> Optional[float]:

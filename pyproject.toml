@@ -10,7 +10,6 @@ use_parentheses = true
 [tool.pylint.message_control]
 disable = [
     "import-error",
-    "bad-continuation",
     "missing-function-docstring",
     "logging-fstring-interpolation",
     "too-many-instance-attributes",
