@@ -55,6 +55,8 @@ jobs:
   publish:
     needs: [test, docs] # only run if previous jobs are successful
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
