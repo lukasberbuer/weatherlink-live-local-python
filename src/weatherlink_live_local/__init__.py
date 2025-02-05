@@ -5,20 +5,8 @@ from __future__ import annotations
 import json
 import urllib.request
 
-from weatherlink_live_local import conditions, discovery, units
-
-
-def discover(timeout: int = 1) -> list[discovery.ServiceInfo]:
-    """
-    Discover all WeatherLink Live services on local network(s).
-
-    Args:
-        timeout: Timeout in seconds
-
-    Returns:
-        List of found services
-    """
-    return discovery.Discovery.find(timeout=timeout)
+from weatherlink_live_local import conditions, units
+from weatherlink_live_local._discovery import *  # noqa: F403
 
 
 def parse_response(json_str: str, units: units.Units) -> conditions.Conditions:
