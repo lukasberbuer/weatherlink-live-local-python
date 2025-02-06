@@ -1,6 +1,6 @@
 import pytest
 
-from weatherlink_live_local.units import (
+from weatherlink_live_local import (
     PressureUnit,
     RainUnit,
     TemperatureUnit,

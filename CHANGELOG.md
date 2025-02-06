@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Flatten modules, migrate modules `units`, `conditions` and `discovery` into `__init__`
+
 ## [0.3.0] - 2024-09-05
 
 ### Changed

@@ -14,11 +14,11 @@ def main():
     ip_first_device = devices[0].ip_addresses[0]
 
     # specify units
-    units = wlll.units.Units(
-        temperature=wlll.units.TemperatureUnit.CELSIUS,
-        pressure=wlll.units.PressureUnit.HECTOPASCAL,
-        rain=wlll.units.RainUnit.MILLIMETER,
-        wind_speed=wlll.units.WindSpeedUnit.METER_PER_SECOND,
+    units = wlll.Units(
+        temperature=wlll.TemperatureUnit.CELSIUS,
+        pressure=wlll.PressureUnit.HECTOPASCAL,
+        rain=wlll.RainUnit.MILLIMETER,
+        wind_speed=wlll.WindSpeedUnit.METER_PER_SECOND,
     )
 
     # poll sensor data / conditions
