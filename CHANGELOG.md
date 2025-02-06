@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Async discover function `discover_async`
+- Python 3.13 support
+
 ### Changed
 
 - Flatten modules, migrate modules `units`, `conditions` and `discovery` into `__init__`

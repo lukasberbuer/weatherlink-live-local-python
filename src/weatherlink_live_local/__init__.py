@@ -448,7 +448,6 @@ async def discover_async(timeout: float = 1.0) -> list[ServiceInfo]:
         ]
 
 
-
 def parse_response(json_str: str, units: Units) -> Conditions:
     """
     Parse JSON response from WeatherLink Live API.
